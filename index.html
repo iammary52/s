@@ -12,8 +12,7 @@
 :root{
   --ink:#eaf1fb; --sub:#93a6c4; --lite:#6ba6de; --lite2:#8fc0ee; --mid:#3d76c2; --deep:#274f93;
   --line:rgba(120,160,210,.16);
-  --sans:"Noto Sans KR",sans-serif;
-  --grotesk:"Space Grotesk","Noto Sans KR",sans-serif;
+  --sans:"Noto Sans KR",sans-serif; --grotesk:"Space Grotesk","Noto Sans KR",sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
@@ -23,12 +22,9 @@ body{background:radial-gradient(120% 90% at 50% 28%,#101a2c 0%,#0a111c 45%,#0609
 
 .scene{position:relative;height:100vh;min-height:600px;display:flex;flex-direction:column;
   align-items:center;justify-content:center;isolation:isolate}
-
-/* cursor spotlight */
 .spot{position:fixed;width:560px;height:560px;left:0;top:0;transform:translate(-50%,-50%);
   border-radius:50%;pointer-events:none;z-index:1;mix-blend-mode:screen;opacity:0;transition:opacity .4s;
   background:radial-gradient(circle,rgba(103,166,240,.24),rgba(103,166,240,.07) 42%,transparent 70%)}
-
 .grid{position:absolute;inset:0;z-index:0;opacity:.4;pointer-events:none;
   background-image:linear-gradient(rgba(110,150,210,.05) 1px,transparent 1px),
     linear-gradient(90deg,rgba(110,150,210,.05) 1px,transparent 1px);
@@ -36,30 +32,37 @@ body{background:radial-gradient(120% 90% at 50% 28%,#101a2c 0%,#0a111c 45%,#0609
   -webkit-mask-image:radial-gradient(70% 70% at 50% 42%,#000,transparent);
           mask-image:radial-gradient(70% 70% at 50% 42%,#000,transparent)}
 
-/* ---- 3D logo plate ---- */
-.stage{position:relative;z-index:3;perspective:1100px;margin-bottom:60px}
-.halo{position:absolute;left:50%;top:50%;width:360px;height:360px;transform:translate(-50%,-50%);
-  border-radius:50%;background:radial-gradient(circle,rgba(61,118,194,.32),transparent 66%);
-  filter:blur(26px);pointer-events:none;z-index:-1}
-.contact{position:absolute;left:50%;bottom:-52px;transform:translateX(-50%);
-  width:250px;height:40px;border-radius:50%;pointer-events:none;
-  background:radial-gradient(50% 60% at 50% 50%,rgba(3,7,14,.75),transparent 72%);filter:blur(8px)}
-.plate{position:relative;width:270px;border-radius:26px;overflow:hidden;cursor:grab;
-  background:#eef1f5;border:1px solid rgba(255,255,255,.5);
-  box-shadow:0 40px 70px rgba(4,12,30,.6),0 8px 20px rgba(4,12,30,.5),
-             inset 0 1px 0 rgba(255,255,255,.85);
-  will-change:transform}
-.plate.drag{cursor:grabbing}
-.plate img{width:100%;display:block;-webkit-user-drag:none;user-select:none}
-.plate .gloss{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(115deg,transparent 34%,rgba(255,255,255,.55) 48%,transparent 60%);
-  opacity:.0;transition:opacity .3s;mix-blend-mode:screen}
-.plate:hover .gloss{opacity:.6}
+.stage{position:relative;z-index:3;perspective:1100px;margin-bottom:90px}
+.halo{position:absolute;left:50%;top:50%;width:340px;height:340px;transform:translate(-50%,-50%);
+  border-radius:50%;background:radial-gradient(circle,rgba(61,118,194,.30),transparent 66%);
+  filter:blur(28px);pointer-events:none;z-index:-1}
+.contact{position:absolute;left:50%;bottom:-64px;transform:translateX(-50%);
+  width:240px;height:38px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(50% 60% at 50% 50%,rgba(3,7,14,.7),transparent 72%);filter:blur(8px)}
 
-/* ---- text + button ---- */
+.rig{width:220px;height:220px;transform-style:preserve-3d;cursor:grab;animation:spin 24s linear infinite}
+.rig.drag{cursor:grabbing;animation:none}
+@keyframes spin{from{transform:rotateX(-30deg) rotateY(-45deg)}to{transform:rotateX(-30deg) rotateY(315deg)}}
+
+.cf{position:absolute;width:220px;height:220px;background-size:100% 100%;background-position:center;
+  border:1px solid rgba(120,160,210,.18)}
+.fz{transform:translateZ(110px);background-image:url(face-left.png)}
+.rz{transform:rotateY(90deg) translateZ(110px);background-image:url(face-right.png)}
+.tz{transform:rotateX(90deg) translateZ(110px);background-image:url(face-top.png)}
+.bz{transform:rotateY(180deg) translateZ(110px)}
+.lz{transform:rotateY(-90deg) translateZ(110px)}
+.dz{transform:rotateX(-90deg) translateZ(110px)}
+/* hidden faces: solid brand blue with shading */
+.bz,.lz,.dz{background:linear-gradient(160deg,#3f78c4,#22447e)}
+.dz{background:linear-gradient(160deg,#22447e,#16305c)}
+/* per-face lighting overlay */
+.cf::after{content:"";position:absolute;inset:0;pointer-events:none}
+.tz::after{background:linear-gradient(135deg,rgba(255,255,255,.20),transparent 60%)}
+.fz::after{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(0,0,0,.18))}
+.rz::after{background:linear-gradient(200deg,rgba(0,0,0,.05),rgba(0,0,0,.22))}
+
 .copy{position:relative;z-index:3;text-align:center;padding:0 24px}
-.title{display:flex;align-items:center;gap:16px;justify-content:center;font-weight:700;
-  font-size:clamp(18px,2.4vw,26px)}
+.title{display:flex;align-items:center;gap:16px;justify-content:center;font-weight:700;font-size:clamp(18px,2.4vw,26px)}
 .title .bar{width:1px;height:20px;background:var(--line)}
 .title .sys{color:var(--lite2);font-weight:500}
 .tag{font-family:var(--grotesk);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--sub);margin-top:12px}
@@ -82,9 +85,13 @@ body{background:radial-gradient(120% 90% at 50% 28%,#101a2c 0%,#0a111c 45%,#0609
   <div class="stage">
     <div class="halo"></div>
     <div class="contact"></div>
-    <div class="plate" id="plate">
-      <img src="gh-logo.jpeg" alt="경기주택도시공사 GH" />
-      <div class="gloss"></div>
+    <div class="rig" id="rig">
+      <div class="cf fz"></div>
+      <div class="cf rz"></div>
+      <div class="cf tz"></div>
+      <div class="cf bz"></div>
+      <div class="cf lz"></div>
+      <div class="cf dz"></div>
     </div>
   </div>
 
@@ -98,36 +105,17 @@ body{background:radial-gradient(120% 90% at 50% 28%,#101a2c 0%,#0a111c 45%,#0609
 </div>
 
 <script>
-const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const spot=document.getElementById("spot");
-const plate=document.getElementById("plate");
-const gloss=plate.querySelector(".gloss");
-
-let tRX=0,tRY=0, cRX=0,cRY=0, dragging=false, lx=0,ly=0, t0=performance.now();
-
-addEventListener("mousemove",e=>{
-  spot.style.opacity="1"; spot.style.left=e.clientX+"px"; spot.style.top=e.clientY+"px";
-  if(dragging){
-    tRY+=(e.clientX-lx)*0.5; tRX=Math.max(-32,Math.min(32,tRX-(e.clientY-ly)*0.4)); lx=e.clientX; ly=e.clientY;
-  }else{
-    const r=plate.getBoundingClientRect();
-    const px=(e.clientX-(r.left+r.width/2))/(innerWidth/2);
-    const py=(e.clientY-(r.top+r.height/2))/(innerHeight/2);
-    tRY=Math.max(-1,Math.min(1,px))*20;
-    tRX=Math.max(-1,Math.min(1,py))*-14;
-  }
-});
+addEventListener("mousemove",e=>{spot.style.opacity="1";spot.style.left=e.clientX+"px";spot.style.top=e.clientY+"px";});
 addEventListener("mouseleave",()=>spot.style.opacity="0");
-plate.addEventListener("mousedown",e=>{e.preventDefault();dragging=true;plate.classList.add("drag");lx=e.clientX;ly=e.clientY;});
-addEventListener("mouseup",()=>{dragging=false;plate.classList.remove("drag");});
-
-(function loop(now){
-  const float=RM?0:Math.sin((now-t0)*0.0011)*6;
-  cRX+=(tRX-cRX)*0.08; cRY+=(tRY-cRY)*0.08;
-  plate.style.transform=`translateY(${float}px) rotateX(${cRX}deg) rotateY(${cRY}deg)`;
-  gloss.style.transform=`translateX(${cRY*2.2}px)`;
-  requestAnimationFrame(loop);
-})(t0);
+(function(){
+  const rig=document.getElementById("rig");
+  let ry=-45,rx=-30,dragging=false,lx=0,ly=0;
+  function apply(){rig.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;}
+  rig.addEventListener("mousedown",e=>{e.preventDefault();dragging=true;rig.classList.add("drag");lx=e.clientX;ly=e.clientY;apply();});
+  addEventListener("mousemove",e=>{if(!dragging)return;ry+=(e.clientX-lx)*0.5;rx=Math.max(-75,Math.min(75,rx-(e.clientY-ly)*0.4));lx=e.clientX;ly=e.clientY;apply();});
+  addEventListener("mouseup",()=>{dragging=false;rig.classList.remove("drag");});
+})();
 </script>
 </body>
 </html>
